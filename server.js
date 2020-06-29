@@ -31,4 +31,27 @@ app.get("/", function(req, res) {
     });
 });
 
-app.get("/scrape", function(req, res))
+app.get("/scrape", function(req, res) {
+    axios.get("https://www.ripleys.com/weird-news/").then(function(response) {
+        var $ = cheerio.load(response.data);
+        $("article div div div h3").each(function(i, element) {
+            var result= {};
+
+            result.title = $(this)
+                .children("a")
+                .text();
+            result.link = $(this)
+                .children("a")
+                .attr("href");
+                
+            db.Article.create(result)
+                .then(function(dbArticle) {
+                    console.log(dbArticle);
+                })
+                .catch(function(err) {
+                    console.log(err);
+                });
+        });
+        res.send("Scrape Complete");
+    });
+});
