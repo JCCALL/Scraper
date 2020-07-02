@@ -18,6 +18,12 @@ var ArticleSchema = new Schema({
         required: true
     },
 
+    image: {
+        type: String,
+        required: false,
+        default: "https://pbs.twimg.com/profile_images/1158344285407854593/-9PjWt-v_400x400.jpg"
+    },
+
     note: {
         type: Schema.Types.ObjectId,
         ref: "Note"
