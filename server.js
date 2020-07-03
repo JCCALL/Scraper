@@ -34,13 +34,17 @@ app.get("/", function(req, res) {
 app.get("/scrape", function(req, res) {
     axios.get("https://www.ripleys.com/weird-news/").then(function(response) {
         var $ = cheerio.load(response.data);
-        $("article div div div h3").each(function(i, element) {
+        $("h3").each(function(i, element) {
             var result= {};
 
-            result.title = $(this)
+            result.title = $(element)
                 .children("a")
                 .text();
-            result.link = $(this)
+            
+            result.summary = $(element)
+                .children()
+            
+            result.link = $(element)
                 .children("a")
                 .attr("href");
                 
