@@ -1,0 +1,40 @@
+.card {
+    width: 45%;
+    margin-bottom: 40px;
+    background-color: #4091ad;
+}
+
+.card-title {  
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+body {
+    background-image: url("../images/background.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+#head {
+  font-size: 5.5vw;  
+  font-family: 'Kalam', cursive;
+  text-transform: uppercase;
+  text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#modal {
+    background-image: url("../images/background.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: white
+    text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}

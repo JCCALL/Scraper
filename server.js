@@ -3,6 +3,9 @@ var logger = require("morgan");
 var mongoose = require("mongoose");
 var axios = require("axios");
 var cheerio = require("cheerio");
+var Handlebars = require("handlebars")
+var exphbs = require("express-handlebars");
+var {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access');
 
 var db = require("./models");
 
@@ -15,16 +18,20 @@ app.use(express.urlencoded({ extended: true}));
 app.use(express.json());
 app.use(express.static("public"));
 
+app.engine("handlebars", exphbs({ defaultLayout: "main", handlebars: allowInsecurePrototypeAccess(Handlebars) }));
+app.set("view engine", "handlebars");
+
+
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
 
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
 app.get("/", function(req, res) {
-    db.Article.find({}).then(function(data) {
+    db.Article.find({}).then(function(response) {
         var dbData = {
-            articles: data
+            articles: response
         };
-        res.render('index', dbResponse);
+        res.render("index", dbData);
     }).catch(function (err) {
         console.log(err);
         res.send(err);
@@ -71,6 +78,36 @@ app.get("/scrape", function(req, res) {
         });
         res.send("Scrape Complete");
     });
+});
+
+app.get("/articles", function(req, res) {
+    db.Article.find({}).then(function(data){
+        res.send(data);
+    }).catch(function (err) {
+        console.log(err);
+        res.send(err)
+    })
+});
+
+app.get("/articles/:id", function(req, res) {
+    db.Article.findById(req.params.id)
+    .populate("note")
+    .then(function(data){
+        res.json(data);
+    }).catch(function(err) {
+        res.json(err);
+    });
+});
+
+app.post("/articles/:id", function(req, res) {
+    db.Note.create(req.body)
+        .then(function(dbNote) {
+            return db.Article.findOneAndUpdate(req.params.id, { $push: { notes: dbNote._id } }, { new: true });
+        }).then(function(dataArticle) {
+            res.json(dataArticle);
+        }).catch(function(err) {
+            res.json(err);
+        });
 });
 
 app.listen(PORT, function() {

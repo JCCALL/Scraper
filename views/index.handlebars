@@ -1,0 +1,54 @@
+<img class="float-left mb-5 ml-5" src="https://www.ripleys.com/wp-content/uploads/2014/05/ripley-attractions-100x100.png"/>
+<h1 id="head" class="text-light clearfix text-center mt-5">Ripley's Weird News Scraper</h1>
+<!--two buttons for scraping and viewing the articles in json-->
+<div class="row no-gutters justify-content-around">
+    <div class="col-5 col-md-3 text-center mb-5">
+        <button id="new" class="btn btn-lg btn-primary btn-block">New Articles</button>
+    </div>
+    <div class="col-5 col-md-3 text-center">
+        <a href="/articles"><button class="btn btn-lg btn-primary btn-block">Article API</button></a>
+    </div>
+</div>
+<div class="container justify-content-around">
+    {{#each articles}}
+    <div class="card ">
+        <img class="card-img-top" src="{{image}}">
+        <div class="card-body">
+            <h5 class="card-title">{{title}}</h5>
+            <p class="card-text text-light">{{summary}}</p>
+            <a class="btn btn-danger" target="_blank" href="{{link}}">Read More</a>
+            <button id={{_id}} data-toggle="modal" data-target="#myModal"
+                class="notes btn btn-danger pb-1">Notes</button>
+        </div>
+    </div>
+    {{/each}}
+</div>
+
+<!--model for notes-->
+<div id="myModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div id="modal" class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-light">Notes</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h2 id='note-title'class="text-light"></h2>
+                <form>
+                    <div class="form-group">
+                        <label class="text-light" for="exampleFormControlInput1">Title</label>
+                        <input type="text" class="form-control" id="titleInput">
+                    </div>
+                    <div class="form-group">
+                        <label class="text-light" for="exampleFormControlTextarea1">Notes</label>
+                        <textarea class="form-control" id="bodyInput" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>
