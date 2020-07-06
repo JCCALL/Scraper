@@ -2,7 +2,7 @@ var express = require("express");
 var logger = require("morgan");
 var mongoose = require("mongoose");
 var axios = require("axios");
-var cheerio = requrie("cheerio");
+var cheerio = require("cheerio");
 
 var db = require("./models");
 
@@ -34,19 +34,32 @@ app.get("/", function(req, res) {
 app.get("/scrape", function(req, res) {
     axios.get("https://www.ripleys.com/weird-news/").then(function(response) {
         var $ = cheerio.load(response.data);
-        $("h3").each(function(i, element) {
+        $("Article").each(function(i, element) {
             var result= {};
 
             result.title = $(element)
+                .children("div")
+                .children("h3")
                 .children("a")
                 .text();
             
             result.summary = $(element)
-                .children()
+                .children("div")
+                .children("div")
+                .children("p")
+                .text();
             
             result.link = $(element)
+                .children("div")
+                .children("h3")
                 .children("a")
                 .attr("href");
+
+            result.image = $(element)
+                .children("div")
+                .children("a")
+                .children("img")
+                .attr("src")
                 
             db.Article.create(result)
                 .then(function(dbArticle) {
@@ -59,3 +72,7 @@ app.get("/scrape", function(req, res) {
         res.send("Scrape Complete");
     });
 });
+
+app.listen(PORT, function() {
+    console.log("App running on port " + PORT + "!");
+  });
