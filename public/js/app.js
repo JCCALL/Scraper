@@ -13,7 +13,7 @@ $(document).on("click", ".notes", function() {
         console.log(data);
         $("#note-title").text(data.title);
         $(".modal-footer").append("<button type='button' class='btn btn-dark' data-dismiss='modal'>Close</button>");
-        $(".modal-footer").append("<button type='button' data-id='" + data._id + "' id='savenote' data-dismiss='modal' class='btn btn-dark'>Save Note</button>");
+        $(".modal-footer").append("<button type='button' data-id='" + data._id + "' id='savenote' data-dismiss='modal' class='btn btn-success'>Save Note</button>");
         
         if(data.note) {
             $("#titleInput").val(data.note.title);
@@ -29,8 +29,8 @@ $(document).on("click", "#savenote", function() {
       method: "POST",
       url: "/articles/" + thisId,
       data: {
-        title: $("#titleinput").val(),
-        body: $("#bodyinput").val()
+        title: $("#titleInput").val(),
+        body: $("#bodyInput").val()
       }
     }).then(function(data) {
         console.log(data);
@@ -45,26 +45,3 @@ $(document).on("click", "#new", function(event) {
         location.reload();
     });
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

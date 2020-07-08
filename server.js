@@ -81,7 +81,7 @@ app.get("/scrape", function(req, res) {
 });
 
 app.get("/articles", function(req, res) {
-    db.Article.find({}).then(function(data){
+    db.Article.find({}).sort({_id: -1}).then(function(data){
         res.send(data);
     }).catch(function (err) {
         console.log(err);
@@ -90,22 +90,22 @@ app.get("/articles", function(req, res) {
 });
 
 app.get("/articles/:id", function(req, res) {
-    db.Article.findById(req.params.id)
+    db.Article.findOne({ _id: req.params.id })
     .populate("note")
     .then(function(data){
         res.json(data);
     }).catch(function(err) {
-        res.json(err);
+        console.log(err);
+        res.send(err);
     });
 });
 
 app.post("/articles/:id", function(req, res) {
     db.Note.create(req.body)
         .then(function(dbNote) {
-            return db.Article.findOneAndUpdate(req.params.id, { $push: { notes: dbNote._id } }, { new: true });
-        }).then(function(dataArticle) {
-            res.json(dataArticle);
+            return db.Article.findOneAndUpdate({ _id: req.params.id }, { notes: dbNote._id }, { new: true });
         }).catch(function(err) {
+            console.log(err);
             res.json(err);
         });
 });
