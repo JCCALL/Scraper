@@ -1,6 +1,6 @@
 # Ripley's Scraper
 
-![alt text](public/images/Site.png "A picture of rs")
+![alt text](public/images/site.png "A picture of rs")
 
 Site scrapes articles found on Ripley's Beleive it or Not weird news site.
 
